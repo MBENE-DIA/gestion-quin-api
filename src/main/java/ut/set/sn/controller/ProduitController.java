@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -22,7 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import ut.set.sn.exception.PoduitNotFoundException;
 import ut.set.sn.modeles.Produit;
+import ut.set.sn.repo.ProduitRepository;
 import ut.set.sn.service.ProduitService;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -30,6 +34,8 @@ import ut.set.sn.service.ProduitService;
 //ProduitController
 public class ProduitController {
 	ProduitService produitSrv;
+	private ProduitRepository prdRepo;
+	
 
    public ProduitController(ProduitService prodServ) {
 	   this.produitSrv = prodServ;
@@ -61,7 +67,13 @@ public class ProduitController {
   //  @PreAuthorize("hasAuthority('produit:view')")
 	public ResponseEntity<Produit> findById(@PathVariable("id") Long id){
 		Produit pdr = produitSrv.trouverProduitById(id);
-		return new ResponseEntity<Produit>(pdr, HttpStatus.OK);
+	
+			Produit prod = new Produit(pdr.getNom(), pdr.getPrixUnitaire(),pdr.getQuantite(),pdr.getCategorie());
+			prod.setId(pdr.getId());
+			prod.setType(pdr.getType());
+			prod.setPicByte(decompressBytes(pdr.getPicByte()));
+		
+		return new ResponseEntity<Produit>(prod, HttpStatus.OK);
 		
 	}
     
@@ -145,13 +157,48 @@ public class ProduitController {
     }
     
 
-    @PutMapping(path = "/update")
+   @PutMapping("/update/{id}")
     //@PreAuthorize("hasAuthority('produit:write')")
-    public ResponseEntity<Produit> miseAjourProduit(@RequestBody Produit pro){
-		Produit updatePro = produitSrv.updateProduit(pro);
-		return new ResponseEntity<Produit>(updatePro, HttpStatus.OK);
+    public ResponseEntity<Produit> miseAjourProduit(@PathVariable(value = "id") Long prodId, 
+    @RequestBody Produit pdrr){
+    Optional<Produit> pdr = prdRepo.findById(prodId);
+    
+   Produit prod = pdr.get();
+    prod.setNom(prod.getNom());
+    prod.setCategorie(prod.getCategorie());
+    prod.setPhoto(prod.getPhoto());
+    prod.setPrixUnitaire(prod.getPrixUnitaire());
+    prod.setQuantite(prod.getQuantite());
+    prod.setPicByte(prod.getPicByte());
+    prod.setType(prod.getType());
+  		
+	return new ResponseEntity<>(prdRepo.save(prod), HttpStatus.OK);
+		}
+   
 		
-	}
+  /*@PutMapping("/update/{id}")
+  public ResponseEntity<Produit> updateProduit(@RequestParam("id") Long id, 
+		  @RequestParam("imageFile") MultipartFile file,@RequestParam("nom") String nom,
+		   @RequestParam("prixUnitaire") int prixUnitaire,@RequestParam("quantite") int quantite,@RequestParam("categorie") String categorie ) throws IOException {
+	  
+		Produit pdr = produitSrv.trouverProduitById(id);
+		pdr.setPhoto(file.getOriginalFilename());
+		pdr.setPicByte(compressBytes(file.getBytes()));
+		pdr.setType(file.getContentType());
+		pdr.setNom(nom);
+		pdr.setCategorie(categorie);
+		pdr.setQuantite(quantite);
+		Produit prNew = produitSrv.updateProduit(pdr);
+		
+		return new ResponseEntity<Produit>(prNew,HttpStatus.OK);
+	}	*/	
+		
+		
+	
+
+       
+    
+ 
 
     @DeleteMapping(path = "/supprimer/{id}")
     //@PreAuthorize("hasAuthority('pproduit:delete')")

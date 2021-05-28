@@ -28,7 +28,7 @@ public class CommandeController {
 		// TODO Auto-generated constructor stub
 	}
    
-   @GetMapping(path = "/ajouter")
+   @GetMapping(path = "/tous")
    //@PreAuthorize("hasAuthority('commande:list')")
 	public ResponseEntity<List<Commande>> getAlls(){
 		List<Commande> commandes = commandeServ.getAllCommandes();
