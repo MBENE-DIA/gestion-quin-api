@@ -2,13 +2,14 @@ package ut.set.sn.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+import ut.set.sn.modeles.Commande;
 import ut.set.sn.modeles.Livraison;
 
 import ut.set.sn.repo.LivraisonRepository;
@@ -18,14 +19,14 @@ import ut.set.sn.repo.LivraisonRepository;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/livraison")
 public class LivraisonController {
 
 	@Autowired LivraisonRepository repository;
 	
 	
 	@GetMapping("/livraisons")
-	public List<Livraison> getAllLives() {
+	public List<Livraison> getAllLivraison() {
 		System.out.println("Get all clients...");
 
 		List<Livraison> lives = new ArrayList<>();
@@ -33,6 +34,35 @@ public class LivraisonController {
 		
 		return lives;
 	}
+	   @GetMapping(path = "/find/{id}")
+	   // @PreAuthorize("hasAuthority('commande:view')")
+		public ResponseEntity<Optional<Livraison>> findById(@PathVariable("id") Long id){
+			Optional<Livraison> li = repository.findById(id);
+			return new ResponseEntity<Optional<Livraison>>(li, HttpStatus.OK);
+			
+		}
+	  
+	
+	@PostMapping(path = "/ajouter")
+    //@PreAuthorize("hasAuthority('commande:write')")
+    public ResponseEntity<Livraison> ajouterLivraison(@RequestBody Livraison livraison){
+		
+		 repository.save(livraison);
+		 
+		
+		return new ResponseEntity<Livraison>(repository.save(livraison),HttpStatus.CREATED);
+		
+	}
+	
+	 @DeleteMapping(path = "{id}")
+	   // @PreAuthorize("hasAuthority('commande:delete')")
+	    public ResponseEntity<Livraison> deleteCommandeById(@PathVariable("id") Long id){
+			repository.deleteById(id);
+			return new ResponseEntity<Livraison>(HttpStatus.OK);
+	   
+
+			
+	    }
 }
 
 

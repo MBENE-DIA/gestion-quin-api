@@ -103,10 +103,10 @@ public class Commande {
  */
 
 package ut.set.sn.modeles;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.*;
-
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -119,27 +119,36 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Commande implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;    
-    private int quantiteTotal;
-     private int totale;
-    @JsonFormat(pattern="dd/MM/yyyy")
-  	private LocalDate date;
-    private Short etat;
-    private String typePaiement;
-    @JoinColumn(name = "client", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Client client;
-    @JoinColumn(name = "livraison", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Livraison livraion;
+	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private int quantiteTotal;
+	private int totale;
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private LocalDate date;
+	private Short etat;
+	private String typePaiement;
+	
+	@JoinColumn(name = "client", referencedColumnName = "id")
+	@ManyToOne(optional = false)
+	private Client client;
+
+	@JoinColumn(name = "livraison", referencedColumnName = "id")
+	@ManyToOne(optional = false)
+	private Livraison livraion;
+
 	@JoinColumn(name = "produit", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Produit produit;
-    
-    public Client getClient() {
+	@ManyToOne(optional = false)
+	private Produit produit;
+
+	
+	
+	public Produit getProduit() {
+		return produit;
+	}
+	
+		public Client getClient() {
 		return client;
 	}
 
@@ -155,25 +164,28 @@ public class Commande implements Serializable {
 		this.livraion = livraion;
 	}
 
+	public Commande() {
+		super();
+	}
 
-    
-    
-    
-    
-    public Commande() {
-    	super();
-    }
+	public Commande(Long id) {
+		this.id = id;
+	}
 
-    public Commande(Long id) {
-        this.id = id;
-    }
+	
 
-    public Commande(Long id, int quantiteTotal, int totale, LocalDate date) {
-        this.id = id;
-        this.quantiteTotal = quantiteTotal;
-        this.totale = totale;
-        this.date = date;
-    }
+	public Commande(int quantiteTotal, int totale, LocalDate date, Short etat, String typePaiement, Client client,
+			Livraison livraion, Produit produit) {
+		super();
+		this.quantiteTotal = quantiteTotal;
+		this.totale = totale;
+		this.date = date;
+		this.etat = etat;
+		this.typePaiement = typePaiement;
+		this.client = client;
+		this.livraion = livraion;
+		this.produit = produit;
+	}
 
 	public Long getId() {
 		return id;
@@ -223,14 +235,9 @@ public class Commande implements Serializable {
 		this.typePaiement = typePaiement;
 	}
 
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-    
-    
-    
+
+
 }
-
-	
-

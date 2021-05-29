@@ -25,35 +25,7 @@ import ut.set.sn.modeles.UserModel;
 import ut.set.sn.repo.ClientRepository;
 import ut.set.sn.repo.UserRepository;
 import ut.set.sn.service.ClientService;
-/*@CrossOrigin(origins = "http://localhost:4200")
-@RestController
-@RequestMapping("/api/client")
-public class ClientController {
 
-	ClientService clientSrv;
-
-	public ClientController(ClientService clSrv) {
-		   this.clientSrv = clSrv;
-	    	
-			// TODO Auto-generated constructor stub
-		}
-    @GetMapping(path = "/tous")
-    //@PreAuthorize("hasAuthority('categorie:list')")
-	public ResponseEntity<List<Client>> getAlls(){
-		List<Client> clients = clientSrv.getAllClients();
-		return new ResponseEntity<List<Client>>(clients, HttpStatus.OK);
-		
-	}
-
-    @GetMapping(path = "/find/{id}")
-  //  @PreAuthorize("hasAuthority('categorie:view')")
-	public ResponseEntity<Client> findById(@PathVariable("id") Long id){
-		Client cl = clientSrv.trouverClientById(id);
-		return new ResponseEntity<Client>(cl, HttpStatus.OK);
-		
-	}
-
-}*/
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
@@ -89,10 +61,10 @@ public class ClientController {
 
 	
 	@DeleteMapping("/clients/{id}")
-	public Map<String, Boolean> deleteAssistant(@PathVariable(value = "id") Long AssistantId)
+	public Map<String, Boolean> deleteClient(@PathVariable(value = "id") Long ClientId)
 			throws ClientFoundException {
-		Client client = repository.findById(AssistantId)
-				.orElseThrow(() -> new ClientFoundException("Client non trouvé :: " + AssistantId));
+		Client client = repository.findById(ClientId)
+				.orElseThrow(() -> new ClientFoundException("Client non trouvé :: " + ClientId));
 		repository.delete(client);
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
@@ -101,14 +73,14 @@ public class ClientController {
 
 	
 	@DeleteMapping("/clients/delete")
-	public ResponseEntity<String> deleteAllassistants() {
-		System.out.println("Delete All assistant...");
+	public ResponseEntity<String> deleteAllClients() {
+		System.out.println("Delete All Clients...");
 		repository.deleteAll();
 		return new ResponseEntity<>("tout les clients ont été supprimer de la base ", HttpStatus.OK);
 	}
 
 	@PutMapping("/clients/{id}")
-	public ResponseEntity<Client> updateAssistant(@PathVariable("id") Long id, @RequestBody Client Client) {
+	public ResponseEntity<Client> updateClient(@PathVariable("id") Long id, @RequestBody Client Client) {
 		System.out.println("Update Article with ID = " + id + "...");
 		Optional<Client> clientInfo = repository.findById(id);
 		if (clientInfo.isPresent()) {
@@ -130,8 +102,8 @@ public class ClientController {
 		System.out.println("user " + email);
 		Optional<UserModel> user = userRepo.findByEmail(email);
 
-		Client assistant = repository.findByUser(user)
+		Client client = repository.findByUser(user)
 				.orElseThrow(() -> new ClientFoundException("client non trouvé  :: " + user.toString()));
-		return ResponseEntity.ok().body(assistant);
+		return ResponseEntity.ok().body(client);
 	}
 }

@@ -160,17 +160,18 @@ public class ProduitController {
    @PutMapping("/update/{id}")
     //@PreAuthorize("hasAuthority('produit:write')")
     public ResponseEntity<Produit> miseAjourProduit(@PathVariable(value = "id") Long prodId, 
-    @RequestBody Produit pdrr){
+    @RequestBody Produit produitUpdate){
+	   System.out.println("id "+ prodId);
     Optional<Produit> pdr = prdRepo.findById(prodId);
     
    Produit prod = pdr.get();
-    prod.setNom(prod.getNom());
-    prod.setCategorie(prod.getCategorie());
-    prod.setPhoto(prod.getPhoto());
-    prod.setPrixUnitaire(prod.getPrixUnitaire());
-    prod.setQuantite(prod.getQuantite());
-    prod.setPicByte(prod.getPicByte());
-    prod.setType(prod.getType());
+    prod.setNom(produitUpdate.getNom());
+    prod.setCategorie(produitUpdate.getCategorie());
+    prod.setPhoto(produitUpdate.getPhoto());
+    prod.setPrixUnitaire(produitUpdate.getPrixUnitaire());
+    prod.setQuantite(produitUpdate.getQuantite());
+    prod.setPicByte(produitUpdate.getPicByte());
+    prod.setType(produitUpdate.getType());
   		
 	return new ResponseEntity<>(prdRepo.save(prod), HttpStatus.OK);
 		}

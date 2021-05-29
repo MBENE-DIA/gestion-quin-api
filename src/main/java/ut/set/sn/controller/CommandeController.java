@@ -43,14 +43,7 @@ public class CommandeController {
 		return new ResponseEntity<Commande>(com, HttpStatus.OK);
 		
 	}
-    
-    /*public ResponseEntity<Categorie> find(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(
-            categorieService
-                        .trouverCategorieById(id)
-        );
-    }*/
-
+  
     @PostMapping(path = "/ajouter")
     //@PreAuthorize("hasAuthority('commande:write')")
     public ResponseEntity<Commande> ajouterCommande(@RequestBody Commande commande){
@@ -73,12 +66,7 @@ public class CommandeController {
     public ResponseEntity<Commande> deleteCommandeById(@PathVariable("id") Long id){
 		 commandeServ.supprimerCommande(id);
 		return new ResponseEntity<Commande>(HttpStatus.OK);
-   /* public Map<String, Boolean> destroy(@PathVariable("id") Long id) throws ResourceNotFoundException {
-        categorieService.destroy(id);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
-    }*/
+   
 
 		
     }

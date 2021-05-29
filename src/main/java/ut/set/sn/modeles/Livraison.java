@@ -20,11 +20,19 @@ public class Livraison  {
     @JsonFormat(pattern="dd/MM/yyyy")
   	private LocalDate date;
     private String lieu;
+    
     @JoinColumn(name = "employer", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Employer employer;
     
-    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "livraison")
+    public Livraison(LocalDate date, String lieu, Employer employer) {
+		super();
+		this.date = date;
+		this.lieu = lieu;
+		this.employer = employer;
+	}
+
+	/*@OneToMany(cascade = CascadeType.ALL, mappedBy = "livraison")
     private Collection<Commande> commandeCollection;
 */
 
@@ -35,12 +43,7 @@ public class Livraison  {
         this.id = id;
     }
 
-    public Livraison(Long id, LocalDate dateLivraison , String lieu, Employer emp) {
-        this.id = id;
-        this.date = dateLivraison;
-        this.lieu = lieu;
-        this.employer =  emp;
-    }
+    
     
     
 

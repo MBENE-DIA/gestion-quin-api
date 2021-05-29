@@ -45,13 +45,13 @@ public class Client implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
     private Collection<Commande> commandeCollection;
 
-
-    public Collection<Commande> getCommandeCollection() {
-		return commandeCollection;
-	}
-	public void setCommandeCollection(Collection<Commande> commandeCollection) {
-		this.commandeCollection = commandeCollection;
-	}
+//
+//    public Collection<Commande> getCommandeCollection() {
+//		return commandeCollection;
+//	}
+//	public void setCommandeCollection(Collection<Commande> commandeCollection) {
+//		this.commandeCollection = commandeCollection;
+//	}
 	public Client() {
     	super();
     }

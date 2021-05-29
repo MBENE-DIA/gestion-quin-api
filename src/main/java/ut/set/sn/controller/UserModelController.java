@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 import ut.set.sn.DTO.UserDTO;
 import ut.set.sn.exception.Message;
+import ut.set.sn.modeles.Livraison;
 import ut.set.sn.modeles.UserModel;
 import ut.set.sn.repo.UserRepository;
 import ut.set.sn.security.AuthenticationRequest;
@@ -99,7 +100,7 @@ private final UserService userService;
 	}*/
 
 	@PutMapping("/User/updateuser")
-	public ResponseEntity<UserModel> updaterv(@RequestBody UserModel userModel) {
+	public ResponseEntity<UserModel> updateUser(@RequestBody UserModel userModel) {
 		UserModel updateuser = userService.updateUser(userModel);
 		return new ResponseEntity<UserModel>(updateuser, HttpStatus.OK);
 	}
@@ -131,6 +132,15 @@ private final UserService userService;
 		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
 
 	}
+	 @DeleteMapping(path = "{id}")
+	   // @PreAuthorize("hasAuthority('commande:delete')")
+	    public ResponseEntity<UserModel> deleteUserById(@PathVariable("id") Long id){
+		 userRepository.deleteById(id);
+			return new ResponseEntity<UserModel>(HttpStatus.OK);
+	   
+
+			
+	    }
 
 }
 

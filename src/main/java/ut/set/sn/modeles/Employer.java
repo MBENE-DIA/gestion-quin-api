@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,7 +46,7 @@ public class Employer implements Serializable {
       
      @OneToOne
  	 private UserModel user;
-     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employer")
+     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employer", fetch = FetchType.LAZY)
      private Collection<Livraison> livraisonCollection;
     
     public Employer() {
@@ -54,19 +55,25 @@ public class Employer implements Serializable {
 
     public Employer(Long id) {
         this.id = id;
-    }
+  }
+    
+        
 
-    public Employer(Long id, String nom, String prenom, int telephone, UserModel user, int a, String ad, String gen,  LocalDate d) {
-        this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.telephone = telephone;
-        this.user = user;
-        this.adrese = ad;
-        this.age = a;
-        this.genre = gen;
-        this.dateRecrutement = d;
-    }
+	public Employer(String nom, String prenom, int telephone, int age, String adrese, String genre,
+			String situationMatrimonial, LocalDate dateRecrutement, UserModel user,
+			Collection<Livraison> livraisonCollection) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.telephone = telephone;
+		this.age = age;
+		this.adrese = adrese;
+		this.genre = genre;
+		SituationMatrimonial = situationMatrimonial;
+		this.dateRecrutement = dateRecrutement;
+		this.user = user;
+		this.livraisonCollection = livraisonCollection;
+	}
 
 	public Long getId() {
 		return id;
@@ -151,13 +158,13 @@ public class Employer implements Serializable {
 		this.dateRecrutement = dateRecrutement;
 	}
 
-	public Collection<Livraison> getLivraisonCollection() {
-		return livraisonCollection;
-	}
-
-	public void setLivraisonCollection(Collection<Livraison> livraisonCollection) {
-		this.livraisonCollection = livraisonCollection;
-	}
+//	public Collection<Livraison> getLivraisonCollection() {
+//		return livraisonCollection;
+//	}
+//
+//	public void setLivraisonCollection(Collection<Livraison> livraisonCollection) {
+//		this.livraisonCollection = livraisonCollection;
+//	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
